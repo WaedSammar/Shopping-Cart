@@ -1,79 +1,112 @@
-/* Create an array named products which you will use to add all of your product object literals that you create in the next step. */
+// Create 3 or more product objects using object literal notation
 
-/* Create 3 or more product objects using object literal notation 
-   Each product should include five properties
-   - name: name of product (string)
-   - price: price of product (number)
-   - quantity: quantity in cart should start at zero (number)
-   - productId: unique id for the product (number)
-   - image: picture of product (url string)
-*/
+let prodOne = {
+  name: "cherry",
+  price: 3,
+  quantity: 0,
+  productId: 10,
+  image: "images/cherry.jpg",
+};
+let prodTwo = {
+  name: "orange",
+  price: 5,
+  quantity: 0,
+  productId: 20,
+  image: "images/orange.jpg",
+};
+let prodThree = {
+  name: "strawberry",
+  price: 10,
+  quantity: 0,
+  productId: 30,
+  image: "images/strawberry.jpg",
+};
 
-/* Images provided in /images folder. All images from Unsplash.com
-   - cherry.jpg by Mae Mu
-   - orange.jpg by Mae Mu
-   - strawberry.jpg by Allec Gomes
-*/
+//Create an array named products which you will use to add all of your product object
+let products = [prodOne, prodTwo, prodThree];
 
 /* Declare an empty array named cart to hold the items in the cart */
 
-/* Create a function named addProductToCart that takes in the product productId as an argument
-  - addProductToCart should get the correct product based on the productId
-  - addProductToCart should then increase the product's quantity
-  - if the product is not already in the cart, add it to the cart
-*/
+let cart = [];
 
-/* Create a function named increaseQuantity that takes in the productId as an argument
-  - increaseQuantity should get the correct product based on the productId
-  - increaseQuantity should then increase the product's quantity
-*/
+//Create a function named addProductToCart that takes in the product productId as an argument
+function addProductToCart(productId) {
+  let prod = getProductId(productId);
+  if (prod) {
+    prod.quantity += 1;
+    if (!cart.includes(prod)) {
+      cart.push(prod);
+    }
+  }
+}
 
-/* Create a function named decreaseQuantity that takes in the productId as an argument
-  - decreaseQuantity should get the correct product based on the productId
-  - decreaseQuantity should decrease the quantity of the product
-  - if the function decreases the quantity to 0, the product is removed from the cart
-*/
+//Create a function named increaseQuantity that takes in the productId as an argument
+function increaseQuantity(productId) {
+  let prod = getProductId(productId);
+  if (prod) {
+    prod.quantity += 1;
+  }
+}
 
-/* Create a function named removeProductFromCart that takes in the productId as an argument
-  - removeProductFromCart should get the correct product based on the productId
-  - removeProductFromCart should update the product quantity to 0
-  - removeProductFromCart should remove the product from the cart
-*/
+//Create a function named decreaseQuantity that takes in the productId as an argument
+function decreaseQuantity(productId) {
+  let prod = getProductId(productId);
+  if (prod) {
+    prod.quantity--;
+    if (prod.quantity === 0) {
+      removeProductFromCart(productId);
+    }
+  }
+}
 
-/* Create a function named cartTotal that has no parameters
-  - cartTotal should iterate through the cart to get the total cost of all products
-  - cartTotal should return the total cost of the products in the cart
-  Hint: price and quantity can be used to determine total cost
-*/
+// Create a function named removeProductFromCart that takes in the productId as an argument
+function removeProductFromCart(productId) {
+  let index = cart.findIndex(item => item.productId === productId);
+  if (index !== -1) {
+    cart[index].quantity = 0;
+    cart.splice(index, 1);
+  }
+}
+
+//find a product by it's productId
+function getProductId(productId) {
+  return products.find((product) => product.productId === productId) || null;
+}
+
+// Create a function named cartTotal that has no parameters
+function cartTotal() {
+  let totalCost = 0;
+  for (let i = 0; i < cart.length; i++) {
+    totalCost += cart[i].quantity * cart[i].price;
+  }
+  return totalCost;
+}
 
 /* Create a function called emptyCart that empties the products from the cart */
 
-/* Create a function named pay that takes in an amount as an argument
-  - amount is the money paid by customer
-  - pay will return a negative number if there is a remaining balance
-  - pay will return a positive number if money should be returned to customer
-  Hint: cartTotal function gives us cost of all the products in the cart  
-*/
+function emptyCart() {
+  cart = [];
+}
 
-/* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
+// Create a function named pay that takes in an amount as an argument
+let total = 0;
 
-
-/* The following is for running unit tests. 
-   To fully complete this project, it is expected that all tests pass.
-   Run the following command in terminal to run tests
-   npm run test
-*/
+function pay(amount) {
+  total += amount;
+  let remainBalance = total - cartTotal();
+  return remainBalance;
+}
 
 module.exports = {
-   products,
-   cart,
-   addProductToCart,
-   increaseQuantity,
-   decreaseQuantity,
-   removeProductFromCart,
-   cartTotal,
-   pay, 
-   emptyCart,
-   /* Uncomment the following line if completing the currency converter bonus */
-   // currency
-}
+  products,
+  cart,
+  addProductToCart,
+  increaseQuantity,
+  decreaseQuantity,
+  removeProductFromCart,
+  cartTotal,
+  pay,
+  emptyCart,
+  /* Uncomment the following line if completing the currency converter bonus */
+  // currency
+};
